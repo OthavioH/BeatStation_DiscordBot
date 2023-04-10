@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+
+    /* Modules */
+    "module": "commonjs",                                /* Specify what module code is generated. */
+    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
+
+    /* Emit */
+    "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
+    "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
+    "sourceRoot": "./src",                                 /* Specify the root path for debuggers to find the reference source code. */
+    "mapRoot": "",                                    /* Specify the location where debugger should locate map files instead of generated locations. */
+
+    /* Interop Constraints */
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+
+    /* Type Checking */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "typeRoots": [
+        "node_modules/@types"
+    ],
+    "baseUrl": "./"
+  }
+}
