@@ -15,11 +15,24 @@ model BotSettings {
   prefix              String @default("!")
   updatingTimeInHours Int    @default(2)
 
-  socialMediaIds String        @default("[]")
-  socialMedia    SocialMedia[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  authorizedRolesIds String           @default("[]")
+  authorizedRoles    AuthorizedRole[]
+
+  socialMediaIds String        @default("[]")
+  socialMedia    SocialMedia[]
+}
+
+model AuthorizedRole {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  BotSettings   BotSettings? @relation(fields: [botSettingsId], references: [id])
+  botSettingsId Int?
 }
 
 model SocialMedia {
