@@ -38,6 +38,11 @@ const UpdateTimeCooldownCommand: Command = {
             ephemeral: true,
           });
         }
+      } else {
+        await interaction.followUp({
+          content: "You don't have the permissions to do that.",
+          ephemeral: true,
+        });
       }
     } catch (error) {
       console.log(error);
