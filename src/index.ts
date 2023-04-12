@@ -4,7 +4,20 @@ import ListenerController from "./controllers/ListenerController";
 import SettingsController from "./controllers/SettingsController";
 import { prisma } from "./db/prisma";
 
+import fastify from "fastify";
+
 dotenv.config();
+
+const app = fastify({ logger: true });
+
+app.get("/", async (request, reply) => {
+  return { hello: "world" };
+});
+
+app.listen({
+  host: "0.0.0.0",
+  port: process.env.PORT ? Number(process.env.PORT) : 3333,
+});
 
 try {
   const token = process.env.BOT_TOKEN;
