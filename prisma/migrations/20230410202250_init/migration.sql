@@ -2,7 +2,7 @@
 CREATE TABLE "BotSettings" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "prefix" TEXT NOT NULL DEFAULT '!',
-    "updatingTimeInHours" INTEGER NOT NULL DEFAULT 2,
+    "updatingTime" INTEGER NOT NULL DEFAULT 7200,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "authorizedRolesIds" TEXT NOT NULL DEFAULT '[]',

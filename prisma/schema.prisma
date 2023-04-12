@@ -11,9 +11,9 @@ datasource db {
 }
 
 model BotSettings {
-  id                  Int    @id @default(autoincrement())
-  prefix              String @default("!")
-  updatingTimeInHours Int    @default(2)
+  id           Int    @id @default(autoincrement())
+  prefix       String @default("!")
+  updatingTime Int    @default(7200)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -40,8 +40,24 @@ model SocialMedia {
   name            String
   accountUsername String
 
+  postsIds String @default("[]")
+  posts    Post[]
+
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   BotSettings   BotSettings? @relation(fields: [botSettingsId], references: [id])
   botSettingsId Int?
+}
+
+model Post {
+  id    Int      @id @default(autoincrement())
+  title String
+  url   String
+  date  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  SocialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
+  socialMediaId Int?
 }
