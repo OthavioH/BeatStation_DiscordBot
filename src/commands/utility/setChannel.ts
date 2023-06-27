@@ -14,15 +14,18 @@ export default {
     .setDescription("Set Channel to post")
     .addChannelOption(channelOption),
   async execute(interaction: ChatInputCommandInteraction) {
-    SettingsController.setChannel(
-      interaction.options.getChannel("channel")!.id
-    );
+    try {
+      SettingsController.setChannel(
+        interaction.options.getChannel("channel")!.id
+      );
+      const channel = interaction.options.getChannel("channel");
 
-    await interaction.reply({
-      content: `${interaction.options.getChannel(
-        "channel"
-      )} set as channel to post}`,
-      ephemeral: true,
-    });
+      await interaction.reply({
+        content: `${channel} set as channel to post}`,
+        ephemeral: true,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
