@@ -14,7 +14,7 @@ export default {
     .setName("set-channel")
     .setDescription("Set Channel to post")
     .addChannelOption(channelOption)
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageWebhooks),
   async execute(interaction: ChatInputCommandInteraction) {
     try {
       SettingsController.setChannel(
