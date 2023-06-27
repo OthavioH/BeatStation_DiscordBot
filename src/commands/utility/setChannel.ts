@@ -14,6 +14,8 @@ export default {
     .setDescription("Set Channel to post")
     .addChannelOption(channelOption),
   async execute(interaction: ChatInputCommandInteraction) {
+    interaction.deferReply({ ephemeral: true });
+
     SettingsController.setChannel(
       interaction.options.getChannel("channel")!.id
     );
