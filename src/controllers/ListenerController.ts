@@ -1,6 +1,5 @@
 import { Client } from "discord.js";
 import ready from "../listeners/ready/ready";
-import interactionCreateListener from "../listeners/interactionCreate/interactionCreateListener";
 
 export default class ListenerController {
   private client: Client;
@@ -10,7 +9,6 @@ export default class ListenerController {
   }
 
   public startAllListeners() {
-    interactionCreateListener(this.client);
     ready(this.client);
   }
 }

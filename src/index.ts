@@ -1,43 +1,51 @@
 import dotenv from "dotenv";
-import { Client, GatewayIntentBits } from "discord.js";
-import ListenerController from "./controllers/ListenerController";
-import SettingsController from "./controllers/SettingsController";
-import { prisma } from "./db/prisma";
 
 import fastify from "fastify";
+import cors from "@fastify/cors";
+import client from "./bot";
+import SettingsController from "./controllers/SettingsController";
+import { TextChannel } from "discord.js";
 
 dotenv.config();
 
 const app = fastify({ logger: true });
 
+app.register(cors, {
+  origin: "*",
+});
+
 app.get("/", async (request, reply) => {
   return { hello: "world" };
 });
 
-app.listen({
-  host: "0.0.0.0",
-  port: process.env.PORT ? Number(process.env.PORT) : 3333,
+app.post("/webhook/instagram/newPost", async (request, reply) => {
+  if (client) {
+    console.log(request.body);
+
+    const permalink = (request.body as any).permalink as string;
+
+    const channelId = (await SettingsController.getChannel()) ?? "";
+    const channel = client.channels.cache.get(channelId) as TextChannel;
+
+    if (channel) {
+      channel.send(permalink);
+    }
+    return reply.status(200).send("Success");
+  }
 });
 
-try {
-  const token = process.env.BOT_TOKEN;
+app.listen(
+  {
+    host: "0.0.0.0",
+    port: process.env.PORT ? Number(process.env.PORT) : 3333,
+  },
+  (err, address) => {
+    if (err) {
+      console.log(err);
+      process.exit(1);
+    }
+    client.isReady();
 
-  const client = new Client({
-    intents: [GatewayIntentBits.Guilds],
-  });
-
-  const settingsController = new SettingsController(prisma);
-
-  client.login(token).then(() => {
-    console.log("Logged in.");
-
-    const listenerController = new ListenerController(client);
-    listenerController.startAllListeners();
-
-    settingsController.createNewSettings();
-  });
-
-  console.log("Bot started.");
-} catch (error) {
-  console.log(error);
-}
+    console.log("Bot started.");
+  }
+);

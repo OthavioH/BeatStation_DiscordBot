@@ -1,14 +1,5 @@
 import { Client } from "discord.js";
-import { Commands } from "../../Commands";
 
-export default function ready(client: Client) {
-  client.on("ready", async () => {
-    if (!client.user || !client.application) {
-      return;
-    }
-
-    await client.application.commands.set(Commands);
-
-    console.log(`Logged in as ${client.user.username}!`);
-  });
+export default async function ready(c: Client) {
+  console.log(`Ready! Logged in as ${c.user?.tag}`);
 }
