@@ -13,8 +13,7 @@ export default {
   data: new SlashCommandBuilder()
     .setName("set-channel")
     .setDescription("Set Channel to post")
-    .addChannelOption(channelOption)
-    .setDefaultMemberPermissions(PermissionFlagsBits.Connect),
+    .addChannelOption(channelOption),
   async execute(interaction: ChatInputCommandInteraction) {
     try {
       SettingsController.setChannel(
