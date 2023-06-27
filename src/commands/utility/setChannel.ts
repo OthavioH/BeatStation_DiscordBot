@@ -1,5 +1,6 @@
 import {
   ChatInputCommandInteraction,
+  PermissionFlagsBits,
   SlashCommandBuilder,
   SlashCommandChannelOption,
 } from "discord.js";
@@ -12,7 +13,8 @@ export default {
   data: new SlashCommandBuilder()
     .setName("set-channel")
     .setDescription("Set Channel to post")
-    .addChannelOption(channelOption),
+    .addChannelOption(channelOption)
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
   async execute(interaction: ChatInputCommandInteraction) {
     try {
       SettingsController.setChannel(

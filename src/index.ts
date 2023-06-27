@@ -26,12 +26,11 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
 
     const channelId = (await SettingsController.getChannel()) ?? "";
     const channel = client.channels.cache.get(channelId) as TextChannel;
-    console.log(channelId, channel);
 
     if (channel) {
       channel.send(permalink);
     }
-    reply.status(200).send("Success");
+    return reply.status(200).send("Success");
   }
 });
 
