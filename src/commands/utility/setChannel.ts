@@ -10,7 +10,7 @@ const channelOption = (option: SlashCommandChannelOption) =>
 
 export default {
   data: new SlashCommandBuilder()
-    .setName("setChannel")
+    .setName("set-channel")
     .setDescription("Set Channel to post")
     .addChannelOption(channelOption),
   async execute(interaction: ChatInputCommandInteraction) {
