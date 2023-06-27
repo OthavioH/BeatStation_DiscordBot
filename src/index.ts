@@ -4,6 +4,7 @@ import fastify from "fastify";
 import cors from "@fastify/cors";
 import client from "./bot";
 import SettingsController from "./controllers/SettingsController";
+import { TextChannel } from "discord.js";
 
 dotenv.config();
 
@@ -24,11 +25,11 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
     const permalink = (request.body as any).permalink as string;
 
     const channelId = (await SettingsController.getChannel()) ?? "";
-    const channel = client.channels.cache.get(channelId);
+    const channel = client.channels.cache.get(channelId) as TextChannel;
     console.log(channelId, channel);
 
     if (channel) {
-      channel.client.user.send(`New post on Instagram! ${permalink}`);
+      channel.send(permalink);
     }
     reply.status(200);
   }
