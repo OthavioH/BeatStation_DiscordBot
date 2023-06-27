@@ -18,6 +18,10 @@ app.get("/", async (request, reply) => {
   return { hello: "world" };
 });
 
+app.head("/", async (request, reply) => {
+  return reply.status(200).send("Success");
+});
+
 app.post("/webhook/instagram/newPost", async (request, reply) => {
   if (client) {
     console.log(request.body);
