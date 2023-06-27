@@ -5,6 +5,7 @@ import ISocialMedia from "src/common/models/SocialMedia";
 export default class SettingsController {
   private prismaClient: PrismaClient;
   private static authToken: string;
+  private static channelToPostId: string;
 
   constructor(prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
@@ -16,6 +17,14 @@ export default class SettingsController {
 
   static async getToken() {
     return this.authToken;
+  }
+
+  static async setChannel(channelId: string) {
+    SettingsController.channelToPostId = channelId;
+  }
+
+  static async getChannel() {
+    return this.channelToPostId;
   }
 
   async getSettings(): Promise<BotSettings | null> {

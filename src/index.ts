@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import client from "./bot";
+import SettingsController from "./controllers/SettingsController";
 
 dotenv.config();
 
@@ -18,7 +19,15 @@ app.get("/", async (request, reply) => {
 
 app.post("/webhook/instagram/newPost", async (request, reply) => {
   console.log(request.body);
-  reply.send(request.body);
+
+  const permalink = (request.body as any).permalink as string;
+
+  const channelId = (await SettingsController.getChannel()) ?? "";
+  const channel = client.channels.cache.get(channelId);
+  if (channel) {
+    channel.client.user.send(`New post on Instagram! ${permalink}`);
+  }
+  reply.status(200);
 });
 
 app.listen(
