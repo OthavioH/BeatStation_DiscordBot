@@ -18,7 +18,7 @@ export default {
       interaction.options.getChannel("channel")!.id
     );
 
-    await interaction.followUp({
+    await interaction.reply({
       content: `${interaction.options.getChannel(
         "channel"
       )} set as channel to post}`,
