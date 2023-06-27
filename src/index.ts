@@ -24,6 +24,8 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
 
   const channelId = (await SettingsController.getChannel()) ?? "";
   const channel = client.channels.cache.get(channelId);
+  console.log(channelId, channel);
+
   if (channel) {
     channel.client.user.send(`New post on Instagram! ${permalink}`);
   }
