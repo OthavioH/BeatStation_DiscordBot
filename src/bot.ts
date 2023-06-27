@@ -33,9 +33,6 @@ try {
   client.login(token).then(() => {
     console.log("Logged in.");
 
-    const listenerController = new ListenerController(client);
-    listenerController.startAllListeners();
-
     settingsController.createNewSettings();
   });
 } catch (error) {

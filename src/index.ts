@@ -18,18 +18,20 @@ app.get("/", async (request, reply) => {
 });
 
 app.post("/webhook/instagram/newPost", async (request, reply) => {
-  console.log(request.body);
+  if (client) {
+    console.log(request.body);
 
-  const permalink = (request.body as any).permalink as string;
+    const permalink = (request.body as any).permalink as string;
 
-  const channelId = (await SettingsController.getChannel()) ?? "";
-  const channel = client.channels.cache.get(channelId);
-  console.log(channelId, channel);
+    const channelId = (await SettingsController.getChannel()) ?? "";
+    const channel = client.channels.cache.get(channelId);
+    console.log(channelId, channel);
 
-  if (channel) {
-    channel.client.user.send(`New post on Instagram! ${permalink}`);
+    if (channel) {
+      channel.client.user.send(`New post on Instagram! ${permalink}`);
+    }
+    reply.status(200);
   }
-  reply.status(200);
 });
 
 app.listen(

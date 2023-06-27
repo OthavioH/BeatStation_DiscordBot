@@ -20,7 +20,7 @@ export default class SettingsController {
   }
 
   static async setChannel(channelId: string) {
-    SettingsController.channelToPostId = channelId;
+    this.channelToPostId = channelId;
   }
 
   static async getChannel() {
