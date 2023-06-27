@@ -20,10 +20,12 @@ export default {
       );
       const channel = interaction.options.getChannel("channel");
 
-      await interaction.reply({
-        content: `${channel} set as channel to post}`,
-        ephemeral: true,
-      });
+      if (interaction.replied) {
+        await interaction.reply({
+          content: `${channel} set as channel to post}`,
+          ephemeral: true,
+        });
+      }
     } catch (error) {
       console.error(error);
     }

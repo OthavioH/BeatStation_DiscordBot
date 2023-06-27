@@ -31,8 +31,6 @@ try {
   const settingsController = new SettingsController(prisma);
 
   client.login(token).then(() => {
-    console.log("Logged in.");
-
     settingsController.createNewSettings();
   });
 } catch (error) {
