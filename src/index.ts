@@ -31,7 +31,7 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
     if (channel) {
       channel.send(permalink);
     }
-    reply.status(200);
+    reply.status(200).send("Success");
   }
 });
 
