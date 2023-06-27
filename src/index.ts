@@ -18,7 +18,7 @@ app.get("/", async (request, reply) => {
   return { hello: "world" };
 });
 
-app.head("/", async (request, reply) => {
+app.head("/status", async (request, reply) => {
   return reply.status(200).send("Success");
 });
 
