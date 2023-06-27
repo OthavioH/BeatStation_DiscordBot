@@ -20,7 +20,9 @@ export default {
       );
       const channel = interaction.options.getChannel("channel");
 
-      if (interaction && !interaction.replied) {
+      if (interaction.isRepliable() && !interaction.replied) {
+        console.log(interaction);
+
         await interaction.reply({
           content: `${channel} set as channel to post}`,
           ephemeral: true,
