@@ -12,7 +12,7 @@ export default function InstagramPostMessage(
   return {
     content: `:60_Instagram: **Post novo no Instagram do BeatStation!!**\n\n${
       roleId ? `<@&${roleId}>` : ""
-    }}`,
+    }`,
     embeds: [embed],
   };
 }
