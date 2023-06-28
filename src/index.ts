@@ -4,7 +4,13 @@ import fastify from "fastify";
 import cors from "@fastify/cors";
 import client, { settingsController } from "./bot";
 import SettingsController from "./controllers/SettingsController";
-import { MessageCreateOptions, MessagePayload, TextChannel } from "discord.js";
+import {
+  Embed,
+  EmbedBuilder,
+  MessageCreateOptions,
+  MessagePayload,
+  TextChannel,
+} from "discord.js";
 
 dotenv.config();
 
@@ -34,18 +40,24 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
 
       if (channel) {
         const roleId = await settingsController.getRoleId(channel.guild.id);
+        const embed: EmbedBuilder = new EmbedBuilder()
+          .setTitle(caption)
+          .setDescription(permalink)
+          .setThumbnail(thumbnailUrl)
+          .setImage(imageUrl)
+          .setColor(8600244)
+          .setTimestamp(new Date())
+          .setFooter({
+            text: "Instagram",
+          })
+          .setAuthor({
+            name: "BeatStation",
+            url: "https://www.instagram.com/beatstation777/",
+          });
+
         await channel.send({
           content: `:60_Instagram: **Post novo no Instagram do BeatStation!!**\n\n<@&${roleId}>`,
-          embeds: [
-            {
-              color: 8600244,
-              title: caption,
-              video: mediaType === "VIDEO" ? { url: imageUrl } : undefined,
-              description: permalink,
-              thumbnail: { url: thumbnailUrl },
-              image: mediaType === "IMAGE" ? { url: imageUrl } : undefined,
-            },
-          ],
+          embeds: [embed],
         });
       }
     });
