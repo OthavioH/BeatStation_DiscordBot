@@ -41,12 +41,10 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
       if (channel) {
         const roleId = await settingsController.getRoleId(channel.guild.id);
         const embed: EmbedBuilder = new EmbedBuilder()
-          .setTitle(caption)
+          .setTitle(caption ?? "Novo post no Instagram")
           .setDescription(permalink)
-          .setThumbnail(thumbnailUrl)
           .setImage(imageUrl)
           .setColor(8600244)
-          .setTimestamp(new Date())
           .setFooter({
             text: "Instagram",
           })
@@ -54,6 +52,7 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
             name: "BeatStation",
             url: "https://www.instagram.com/beatstation777/",
           });
+        thumbnailUrl && embed.setThumbnail(thumbnailUrl);
 
         await channel.send({
           content: `:60_Instagram: **Post novo no Instagram do BeatStation!!**\n\n<@&${roleId}>`,
