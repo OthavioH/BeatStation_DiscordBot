@@ -27,14 +27,9 @@ client.once(Events.ClientReady, ready);
 
 client.on(Events.InteractionCreate, interactionHandler);
 
-try {
-  const settingsController = new SettingsController(prisma);
+const settingsController = new SettingsController(prisma);
 
-  client.login(token).then(() => {
-    settingsController.createNewSettings();
-  });
-} catch (error) {
-  console.error(error);
-}
+client.login(token);
 
 export default client;
+export { settingsController };

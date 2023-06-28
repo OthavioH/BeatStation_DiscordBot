@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 
 import fastify from "fastify";
 import cors from "@fastify/cors";
-import client from "./bot";
+import client, { settingsController } from "./bot";
 import SettingsController from "./controllers/SettingsController";
-import { TextChannel } from "discord.js";
+import { MessageCreateOptions, MessagePayload, TextChannel } from "discord.js";
 
 dotenv.config();
 
@@ -26,14 +26,34 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
   if (client) {
     console.log(request.body);
 
-    const permalink = (request.body as any).permalink as string;
+    const { permalink, imageUrl } = request.body as any;
 
-    const channelId = (await SettingsController.getChannel()) ?? "";
-    const channel = client.channels.cache.get(channelId) as TextChannel;
+    const channelIdList = await settingsController.getRegisteredChannels();
+    console.log(channelIdList);
 
-    if (channel) {
-      channel.send(permalink);
+    for (let i = 0; i < channelIdList.length; i++) {
+      const channelId = channelIdList[i];
+      console.log("channelId", channelId);
+
+      const channel = client.channels.cache.get(channelId) as TextChannel;
+
+      if (channel) {
+        await channel.send({
+          content: `@everyone Post novo do BeatStation!!\n${permalink}`,
+          embeds: [
+            {
+              image: {
+                url: imageUrl,
+              },
+            },
+          ],
+          allowedMentions: {
+            parse: ["everyone"],
+          },
+        });
+      }
     }
+
     return reply.status(200).send("Success");
   }
 });
