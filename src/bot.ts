@@ -3,7 +3,6 @@ import token from "./config/token";
 import DiscordClient from "./types/DiscordClient";
 import commandList from "./commands/commandList";
 import SettingsController from "./controllers/SettingsController";
-import ListenerController from "./controllers/ListenerController";
 import { prisma } from "./db/prisma";
 import ready from "./listeners/ready/ready";
 import interactionHandler from "./listeners/interactionHandler/interactionHandlerListener";
@@ -27,9 +26,8 @@ client.once(Events.ClientReady, ready);
 
 client.on(Events.InteractionCreate, interactionHandler);
 
-const settingsController = new SettingsController(prisma);
+export const settingsController = new SettingsController(prisma);
 
 client.login(token);
 
 export default client;
-export { settingsController };

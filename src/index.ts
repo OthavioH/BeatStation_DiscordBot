@@ -31,8 +31,7 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
     const channelIdList = await settingsController.getRegisteredChannels();
     console.log(channelIdList);
 
-    for (let i = 0; i < channelIdList.length; i++) {
-      const channelId = channelIdList[i];
+    channelIdList.forEach(async (channelId) => {
       console.log("channelId", channelId);
 
       const channel = client.channels.cache.get(channelId) as TextChannel;
@@ -51,7 +50,7 @@ app.post("/webhook/instagram/newPost", async (request, reply) => {
           ],
         });
       }
-    }
+    });
 
     return reply.status(200).send("Success");
   }
