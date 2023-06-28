@@ -31,7 +31,7 @@ app.register(routes);
 app.listen(
   {
     host: "0.0.0.0",
-    port: process.env.PORT ? Number(process.env.PORT) : 3333,
+    port: process.env.PORT ? Number(process.env.PORT) : 8080,
   },
   (err, address) => {
     if (err) {
@@ -43,3 +43,5 @@ app.listen(
     console.log("Bot started.");
   }
 );
+
+export default app;

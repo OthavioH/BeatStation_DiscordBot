@@ -1,6 +1,6 @@
-import Command from "src/shared/models/Command";
+import disableInstagramNotifier from "./utility/disableInstagramNotifier";
 import pingCommand from "./utility/pingCommand";
 import setChannel from "./utility/setChannel";
 import setRole from "./utility/setRole";
 
-export default [pingCommand, setChannel, setRole];
+export default [pingCommand, setChannel, setRole, disableInstagramNotifier];
