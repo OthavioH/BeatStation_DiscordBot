@@ -11,7 +11,7 @@ import { z } from "zod";
 
 import client, { settingsController } from "src/bot";
 
-export default function routes(fastify: FastifyInstance, options: any) {
+export default async function routes(fastify: FastifyInstance, options: any) {
   fastify.get("/", async (request, reply) => {
     return reply.send("This API is the server of the BeatStation discord bot");
   });
