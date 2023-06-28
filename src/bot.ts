@@ -1,11 +1,11 @@
 import { GatewayIntentBits, Events, Options } from "discord.js";
 import token from "./config/token";
-import DiscordClient from "./types/DiscordClient";
+import DiscordClient from "./shared/types/DiscordClient";
 import commandList from "./commands/commandList";
 import SettingsController from "./controllers/SettingsController";
-import { prisma } from "./db/prisma";
-import ready from "./listeners/ready/ready";
-import interactionHandler from "./listeners/interactionHandler/interactionHandlerListener";
+import { prisma } from "./config/db/prisma";
+import ready from "./shared/listeners/ready/ready";
+import interactionHandler from "./shared/listeners/interactionHandler/interactionHandlerListener";
 
 const client = new DiscordClient({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],

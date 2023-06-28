@@ -1,5 +1,5 @@
 import { Client, ClientOptions, Collection } from "discord.js";
-import Command from "src/common/models/Command";
+import Command from "src/shared/models/Command";
 
 export default class DiscordClient extends Client {
   commands: Collection<string, Command> = new Collection();

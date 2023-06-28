@@ -1,4 +1,4 @@
-import Command from "src/common/models/Command";
+import Command from "src/shared/models/Command";
 import pingCommand from "./utility/pingCommand";
 import setChannel from "./utility/setChannel";
 import setRole from "./utility/setRole";

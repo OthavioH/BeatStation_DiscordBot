@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import ready from "../listeners/ready/ready";
+import ready from "../shared/listeners/ready/ready";
 
 export default class ListenerController {
   private client: Client;

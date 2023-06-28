@@ -2,12 +2,25 @@ import dotenv from "dotenv";
 
 import fastify from "fastify";
 import cors from "@fastify/cors";
-import client, { settingsController } from "./bot";
+import fastifyRequestLogger from "@mgcrea/fastify-request-logger";
+
+import client from "./bot";
 import routes from "./routes/index.routes";
 
 dotenv.config();
 
-const app = fastify({ logger: true });
+const app = fastify({
+  logger: {
+    level: "debug",
+    transport: {
+      target: "@mgcrea/pino-pretty-compact",
+      options: { translateTime: "HH:MM:ss", ignore: "pid,hostname" },
+    },
+  },
+  disableRequestLogging: true,
+});
+
+app.register(fastifyRequestLogger);
 
 app.register(cors, {
   origin: "*",

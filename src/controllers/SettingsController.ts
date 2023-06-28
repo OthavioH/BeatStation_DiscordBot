@@ -1,6 +1,6 @@
 import { BotSettings, PrismaClient } from "@prisma/client";
-import IPost from "src/common/models/IPost";
-import ISocialMedia from "src/common/models/SocialMedia";
+import IPost from "src/shared/models/IPost";
+import ISocialMedia from "src/shared/models/SocialMedia";
 
 export default class SettingsController {
   private prismaClient: PrismaClient;
