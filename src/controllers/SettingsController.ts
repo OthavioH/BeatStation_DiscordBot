@@ -37,41 +37,59 @@ export default class SettingsController {
     return settings;
   }
 
+  async registerNewChannel(guildId: string, channelId: string) {
+    const isThereAnySettings = await this.getSettings(guildId);
+
+    if (!isThereAnySettings) {
+      return this.createNewSettings(guildId, channelId, undefined);
+    }
+
+    return await this.prismaClient.botSettings.update({
+      data: {
+        channelId: channelId,
+      },
+      where: {
+        guildId,
+      },
+    });
+  }
+
+  async deleteSettings(guildId: string) {
+    return await this.prismaClient.botSettings.delete({
+      where: {
+        guildId,
+      },
+    });
+  }
+
   async createNewSettings(
     guildId: string,
     channelId?: string,
     roleId?: string
   ) {
+    return await this.prismaClient.botSettings.create({
+      data: {
+        guildId,
+        channelId: channelId ?? "",
+        roleId: roleId ?? "",
+      },
+    });
+  }
+
+  async registerNewRole(guildId: string, roleId: string) {
     const isThereAnySettings = await this.getSettings(guildId);
 
     if (!isThereAnySettings) {
-      return await this.prismaClient.botSettings.create({
-        data: {
-          guildId,
-          channelId: channelId ?? "",
-          roleId: roleId ?? "",
-        },
-      });
+      return this.createNewSettings(guildId, undefined, roleId);
     }
 
-    if (roleId) {
-      return await this.prismaClient.botSettings.update({
-        data: {
-          roleId: roleId,
-        },
-        where: {
-          guildId,
-        },
-      });
-    } else if (channelId) {
-      return await this.prismaClient.botSettings.update({
-        data: {
-          channelId: channelId,
-        },
-        where: {
-          guildId,
-        },
-      });
-    }
+    await this.prismaClient.botSettings.update({
+      data: {
+        roleId,
+      },
+      where: {
+        guildId,
+      },
+    });
   }
 }

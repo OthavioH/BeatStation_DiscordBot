@@ -25,6 +25,15 @@ commandList.forEach((command) => {
 client.once(Events.ClientReady, ready);
 
 client.on(Events.InteractionCreate, interactionHandler);
+client.on(Events.GuildMemberUpdate, (oldMember, newMember) => {
+  if (client.user!.id === newMember.id) {
+    // verify roles, if has 0 roles, then the bot was kicked
+    if (newMember.roles.cache.entries.length === 0) {
+      console.log("bot was kicked");
+      settingsController.deleteSettings(newMember.guild.id);
+    }
+  }
+});
 
 export const settingsController = new SettingsController(prisma);
 

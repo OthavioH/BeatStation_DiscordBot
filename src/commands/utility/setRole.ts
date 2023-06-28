@@ -15,7 +15,7 @@ export default {
     .addRoleOption(roleOption),
   async execute(interaction: ChatInputCommandInteraction) {
     try {
-      await settingsController.createNewSettings(
+      await settingsController.registerNewRole(
         interaction.guildId as string,
         interaction.options.getRole("role")!.id
       );

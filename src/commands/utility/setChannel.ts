@@ -16,7 +16,7 @@ export default {
     .addChannelOption(channelOption),
   async execute(interaction: ChatInputCommandInteraction) {
     try {
-      settingsController.createNewSettings(
+      settingsController.registerNewChannel(
         interaction.guildId as string,
         interaction.options.getChannel("channel")!.id
       );

@@ -24,27 +24,25 @@ app.head("/status", async (request, reply) => {
 
 app.post("/webhook/instagram/newPost", async (request, reply) => {
   if (client) {
-    console.log(request.body);
-
-    const { permalink, imageUrl, caption, mediaType } = request.body as any;
+    const { permalink, imageUrl, caption, mediaType, thumbnailUrl } =
+      request.body as any;
 
     const channelIdList = await settingsController.getRegisteredChannels();
-    console.log(channelIdList);
 
     channelIdList.forEach(async (channelId) => {
-      console.log("channelId", channelId);
-
       const channel = client.channels.cache.get(channelId) as TextChannel;
-      const roleId = await settingsController.getRoleId(channel.guild.id);
 
       if (channel) {
+        const roleId = await settingsController.getRoleId(channel.guild.id);
         await channel.send({
-          content: `**Post novo no Instagram do BeatStation!!**\n\n<@&${roleId}>`,
+          content: `:60_Instagram: **Post novo no Instagram do BeatStation!!**\n\n<@&${roleId}>`,
           embeds: [
             {
-              title: `${caption}`,
+              color: 8600244,
+              title: caption,
               video: mediaType === "VIDEO" ? { url: imageUrl } : undefined,
-              url: permalink,
+              description: permalink,
+              thumbnail: { url: thumbnailUrl },
               image: mediaType === "IMAGE" ? { url: imageUrl } : undefined,
             },
           ],
