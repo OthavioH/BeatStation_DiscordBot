@@ -4,118 +4,50 @@ import ISocialMedia from "src/common/models/SocialMedia";
 
 export default class SettingsController {
   private prismaClient: PrismaClient;
-  private static authToken: string;
-  private static channelToPostId: string;
 
   constructor(prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
   }
 
-  async setToken(token: string) {
-    SettingsController.authToken = token;
-  }
-
-  static async getToken() {
-    return this.authToken;
-  }
-
-  static async setChannel(channelId: string) {
-    this.channelToPostId = channelId;
-  }
-
-  static async getChannel() {
-    return this.channelToPostId;
-  }
-
-  async getSettings(): Promise<BotSettings | null> {
-    return await this.prismaClient.botSettings.findFirst();
-  }
-
-  async createNewSettings() {
-    const isThereAnySettings = await this.getSettings();
-
-    if (!isThereAnySettings) {
-      await this.prismaClient.botSettings.create({
-        data: {},
-      });
-    }
-  }
-
-  async changeUpdatingTime(newTime: number) {
-    const settings = await this.getSettings();
-
-    await this.prismaClient.botSettings.update({
-      data: { updatingTime: newTime },
-      where: { id: settings?.id ?? 1 },
-    });
-  }
-
-  async addNewSocialMedia(socialMedia: ISocialMedia) {
-    const settings = await this.getSettings();
-
-    const newSocialMedia = await this.prismaClient.socialMedia.create({
-      data: {
-        name: socialMedia.name,
-        accountUsername: socialMedia.accountUsername,
-        botSettingsId: settings?.id ?? 1,
+  async getRegisteredChannels(): Promise<string[]> {
+    const settings = await this.prismaClient.botSettings.findMany({
+      where: {
+        channelId: {
+          not: undefined,
+        },
       },
     });
 
-    settings!.socialMediaIds = JSON.stringify(
-      JSON.parse(settings!.socialMediaIds).push(newSocialMedia.id)
-    );
-
-    await this.prismaClient.botSettings.update({
-      data: { socialMediaIds: settings!.socialMediaIds },
-      where: { id: settings!.id },
-    });
+    return settings.map((setting) => setting.channelId);
   }
 
-  async removeSocialMedia(socialMediaId: number) {
-    const settings = await this.getSettings();
-    const socialMediaIds = JSON.parse(settings!.socialMediaIds);
-
-    const foundSocialMediaIndex = socialMediaIds.findIndex(
-      (id: number) => id === socialMediaId
-    );
-
-    if (foundSocialMediaIndex !== -1) {
-      socialMediaIds.splice(foundSocialMediaIndex, 1);
-    }
-
-    settings!.socialMediaIds = JSON.stringify(socialMediaIds);
-
-    await this.prismaClient.botSettings.update({
-      data: { socialMediaIds: settings!.socialMediaIds },
-      where: { id: settings!.id },
+  async getSettings(guildId: string): Promise<BotSettings | null> {
+    const settings = await this.prismaClient.botSettings.findUnique({
+      where: { guildId },
     });
 
-    await this.prismaClient.socialMedia.delete({
-      where: { id: socialMediaId },
-    });
+    return settings;
   }
 
-  async addNewPost(post: IPost, socialMediaName: string) {
-    const socialMedia = await this.prismaClient.socialMedia.findFirst({
-      where: { name: socialMediaName },
-    });
+  async createNewSettings(guildId: string, channelId: string) {
+    const isThereAnySettings = await this.getSettings(guildId);
 
-    if (socialMedia) {
-      const newPost = await this.prismaClient.post.create({
+    if (!isThereAnySettings) {
+      return await this.prismaClient.botSettings.create({
         data: {
-          title: post.title,
-          url: post.url,
-          date: post.date,
-          socialMediaId: socialMedia.id,
+          guildId,
+          channelId,
         },
       });
-
-      const newPostsIds = JSON.parse(socialMedia.postsIds).push(newPost.id);
-
-      await this.prismaClient.socialMedia.update({
-        data: { postsIds: JSON.stringify(newPostsIds) },
-        where: { id: socialMedia.id },
-      });
     }
+
+    return await this.prismaClient.botSettings.update({
+      data: {
+        channelId,
+      },
+      where: {
+        guildId,
+      },
+    });
   }
 }
