@@ -26,9 +26,9 @@ export default async function routes(fastify: FastifyInstance, options: any) {
         .object({
           permalink: z.string(),
           imageUrl: z.string(),
-          caption: z.string(),
+          caption: z.string().optional(),
           mediaType: z.string(),
-          thumbnailUrl: z.string(),
+          thumbnailUrl: z.string().optional(),
         })
         .parse(request.body);
 
