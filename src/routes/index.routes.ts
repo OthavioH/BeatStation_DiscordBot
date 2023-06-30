@@ -28,7 +28,9 @@ export default async function routes(fastify: FastifyInstance, options: any) {
         const channelIdList = await settingsController.getRegisteredChannels();
 
         channelIdList.forEach(async (channelId) => {
-          const channel = client.channels.cache.get(channelId) as TextChannel;
+          const channel = (await client.channels.fetch(
+            channelId
+          )) as TextChannel;
 
           if (channel) {
             const roleId = await settingsController.getRoleId(channel.guild.id);
@@ -38,6 +40,9 @@ export default async function routes(fastify: FastifyInstance, options: any) {
               .then(() => {
                 request.log.info("Success!! Posted on discord");
               });
+
+            // wait for 3 seconds
+            await new Promise((resolve) => setTimeout(resolve, 3000));
           }
         });
 
