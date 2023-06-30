@@ -13,7 +13,7 @@ export default function InstagramPostEmbed(
   return new EmbedBuilder({
     title: getStringFirstParagraph(
       post.caption ?? "Novo post no Instagram"
-    ).slice(0, 256),
+    ).slice(0, 200),
     color: 8600244,
     image: { url: imageUrl },
     url: post.permalink,
