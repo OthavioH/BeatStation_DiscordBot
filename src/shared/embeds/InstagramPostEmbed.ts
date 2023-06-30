@@ -11,7 +11,9 @@ export default function InstagramPostEmbed(
     post.mediaType === "VIDEO" ? post.thumbnailUrl ?? "" : post.imageUrl;
 
   return new EmbedBuilder({
-    title: getStringFirstParagraph(post.caption ?? "Novo post no Instagram"),
+    title: getStringFirstParagraph(
+      post.caption ?? "Novo post no Instagram"
+    ).slice(0, 256),
     color: 8600244,
     image: { url: imageUrl },
     url: post.permalink,
