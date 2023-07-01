@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import InstagramWebhooksRouter from "./webhooks/instagram.routes";
+import GuildsRouter from "./guilds/guilds.routes";
 
 export default async function routes(fastify: FastifyInstance, options: any) {
   fastify.get("/", async (request, reply) => {
@@ -11,4 +12,5 @@ export default async function routes(fastify: FastifyInstance, options: any) {
   });
 
   InstagramWebhooksRouter(fastify, options);
+  GuildsRouter(fastify, options);
 }

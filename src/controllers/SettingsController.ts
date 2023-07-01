@@ -29,7 +29,7 @@ export default class SettingsController {
     return settings?.roleId ?? null;
   }
 
-  async getSettings(guildId: string): Promise<BotSettings | null> {
+  async getSettingsById(guildId: string): Promise<BotSettings | null> {
     const settings = await this.prismaClient.botSettings.findUnique({
       where: { guildId },
     });
@@ -37,8 +37,18 @@ export default class SettingsController {
     return settings;
   }
 
+  async getAllSettings(): Promise<BotSettings[]> {
+    return await this.prismaClient.botSettings.findMany({
+      where: {
+        channelId: {
+          not: undefined,
+        },
+      },
+    });
+  }
+
   async registerNewChannel(guildId: string, channelId: string) {
-    const isThereAnySettings = await this.getSettings(guildId);
+    const isThereAnySettings = await this.getSettingsById(guildId);
 
     if (!isThereAnySettings) {
       return this.createNewSettings(guildId, channelId, undefined);
@@ -87,7 +97,7 @@ export default class SettingsController {
   }
 
   async registerNewRole(guildId: string, roleId: string) {
-    const isThereAnySettings = await this.getSettings(guildId);
+    const isThereAnySettings = await this.getSettingsById(guildId);
 
     if (!isThereAnySettings) {
       return this.createNewSettings(guildId, undefined, roleId);
