@@ -55,6 +55,16 @@ export default class SettingsController {
   }
 
   async deleteSettings(guildId: string) {
+    const guildFound = await this.prismaClient.botSettings.findUnique({
+      where: {
+        guildId,
+      },
+    });
+
+    if (!guildFound) {
+      return;
+    }
+
     return await this.prismaClient.botSettings.delete({
       where: {
         guildId,

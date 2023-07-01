@@ -8,12 +8,21 @@ export default {
     .setDescription("Desativar a notificação de novos posts do Instagram"),
   async execute(interaction: ChatInputCommandInteraction) {
     try {
-      await settingsController.deleteSettings(interaction.guildId as string);
+      const deletedSettings = await settingsController.deleteSettings(
+        interaction.guildId as string
+      );
 
-      await interaction.reply({
-        content: `Notificação de novos posts do Instagram desativada!`,
-        ephemeral: true,
-      });
+      if (deletedSettings) {
+        await interaction.reply({
+          content: `Notificação de novos posts do Instagram desativada!`,
+          ephemeral: true,
+        });
+      } else {
+        await interaction.reply({
+          content: `Não há notificação de novos posts do Instagram para desativar!`,
+          ephemeral: true,
+        });
+      }
     } catch (error) {
       app.log.error(error);
     }
