@@ -27,7 +27,7 @@ export default async function routes(fastify: FastifyInstance, options: any) {
 
         const channelIdList = await settingsController.getRegisteredChannels();
 
-        channelIdList.forEach(async (channelId) => {
+        for (const channelId of channelIdList) {
           const channel = (await client.channels.fetch(
             channelId
           )) as TextChannel;
@@ -41,10 +41,9 @@ export default async function routes(fastify: FastifyInstance, options: any) {
                 request.log.info("Success!! Posted on discord");
               });
 
-            // wait for 3 seconds
             await new Promise((resolve) => setTimeout(resolve, 3000));
           }
-        });
+        }
 
         return reply.status(200).send("Posting on discord...");
       }
